@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Scrapper Cheat Sheet</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0d0e15;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 215, 0, 0.2);
+            --gold: #FFD700;
+            --gold-glow: 0 0 20px rgba(255, 215, 0, 0.4);
+            --neon-purple: #b537f2;
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glamorous Background Blobs */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--neon-purple); }
+        .blob-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(255, 215, 0, 0.3); animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #FFF, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--gold-glow);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Glassmorphism Card */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: #000;
+            box-shadow: var(--gold-glow);
+        }
+
+        /* Code Block Area */
+        .code-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1e1e24;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .copy-btn {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: var(--gold-glow);
+        }
+
+        pre {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <div class="container">
+        <header>
+            <h1>API Cheat Sheet</h1>
+            <p class="subtitle">Dokumentasi Scrapper Generator.email & Yopmail</p>
+        </header>
+
+        <!-- CARD 1: GENERATOR.EMAIL -->
+        <div class="card">
+            <h2 class="card-title">🌐 Generator.email</h2>
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Scraping pesan langsung dari URL dengan metode Auto-Click Message ID. Mampu menembus Cloudflare Turnstile.</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'gen-py')">Python (curl_cffi)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'gen-js')">Node.js (cloudscraper)</button>
+            </div>
+
+            <!-- Python Tab -->
+            <div id="gen-py" class="tab-content active">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span style="color: #61afef; font-weight: 600;">generator_api.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-gen-py')">Copy Code</button>
+                    </div>
+<pre><code id="code-gen-py" class="language-python">import asyncio
+import urllib.parse
+import re
+from bs4 import BeautifulSoup
+from curl_cffi.requests import AsyncSession
+
+class GeneratorEmail:
+    @staticmethod
+    async def get_latest_message(email: str):
+        """Mengambil isi pesan terbaru dari suatu email"""
+        usr, dmn = email.split("@", 1)
+        safe_u, safe_d = urllib.parse.quote(usr), urllib.parse.quote(dmn)
+        base_url = f"https://generator.email/{safe_d}/{safe_u}"
+        
+        headers = {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9",
+            "Cache-Control": "max-age=0",
+            "Upgrade-Insecure-Requests": "1"
+        }
+
+        async with AsyncSession(impersonate="chrome120", timeout=30.0) as client:
+            client.cookies.set("surl", f"{safe_d}%2F{safe_u}", domain="generator.email")
+            client.cookies.set("inbox_n", "1", domain="generator.email")
+            
+            # 1. Buka Inbox
+            r = await client.get(base_url, headers=headers)
+            if "just a moment" in r.text.lower() or r.status_code in [403, 503]:
+                return {"status": "error", "msg": "Terblokir Cloudflare"}
+
+            # 2. Cari ID Pesan Terbaru
+            msg_id = None
+            cur_msg = re.search(r'cur_msg_id:\s*"([^"]+)"', r.text)
+            if cur_msg and len(cur_msg.group(1)) > 5:
+                msg_id = cur_msg.group(1)
+            else:
+                paths = re.findall(r"loadInboxClientSide\('([^']+)'\)", r.text)
+                if paths: msg_id = paths[0].split('/')[-1]
+
+            if not msg_id: return {"status": "empty", "msg": "Inbox Kosong"}
+
+            # 3. Ekstrak Isi Pesan
+            msg_url = f"{base_url}/{msg_id}"
+            r_msg = await client.get(msg_url, headers=headers)
+            soup = BeautifulSoup(r_msg.text, "html.parser")
+            body = soup.find(class_="mess_bodiyy")
+            
+            return {"status": "success", "html": str(body) if body else r_msg.text}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Node.js Tab -->
+            <div id="gen-js" class="tab-content">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span style="color: #e5c07b; font-weight: 600;">generator_api.js</span>
+                        <button class="copy-btn" onclick="copyCode('code-gen-js')">Copy Code</button>
+                    </div>
+<pre><code id="code-gen-js" class="language-javascript">const cloudscraper = require('cloudscraper');
+const cheerio = require('cheerio');
+
+async function getLatestMessageGenEmail(email) {
+    const [usr, dmn] = email.split('@');
+    const baseUrl = `https://generator.email/${encodeURIComponent(dmn)}/${encodeURIComponent(usr)}`;
+    
+    const scraper = cloudscraper.defaults({ jar: true });
+    const headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36',
+        'Cookie': `surl=${encodeURIComponent(dmn)}%2F${encodeURIComponent(usr)}; inbox_n=1;`
+    };
+
+    try {
+        let res = await scraper.get({ uri: baseUrl, headers: headers, resolveWithFullResponse: true });
+        let $ = cheerio.load(res.body);
+
+        let msgId = null;
+        const curMsgMatch = res.body.match(/cur_msg_id:\s*"([^"]+)"/);
+        if (curMsgMatch && curMsgMatch[1].length > 5) {
+            msgId = curMsgMatch[1];
+        } else {
+            const onClick = $('.list-group-item').first().attr('onclick');
+            if (onClick) {
+                const match = onClick.match(/'([^']+)'/);
+                if (match) msgId = match[1].split('/').pop();
+            }
+        }
+
+        if (!msgId) return { status: 'empty', msg: 'Inbox Kosong' };
+
+        const msgRes = await scraper.get({ uri: `${baseUrl}/${msgId}`, headers: headers });
+        $ = cheerio.load(msgRes);
+        const htmlBody = $('.mess_bodiyy').html() || msgRes;
+
+        return { status: 'success', html: htmlBody };
+    } catch (err) {
+        return { status: 'error', msg: err.message };
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: YOPMAIL -->
+        <div class="card">
+            <h2 class="card-title">📭 Yopmail.com</h2>
+            <p style="margin-bottom: 15px; color: var(--text-muted);">Sistem bypass token dinamis (YP dan YJ) langsung dari Javascript Yopmail.</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'yop-py')">Python (curl_cffi)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'yop-js')">Node.js (cloudscraper)</button>
+            </div>
+
+            <!-- Python Tab -->
+            <div id="yop-py" class="tab-content active">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span style="color: #61afef; font-weight: 600;">yopmail_api.py</span>
+                        <button class="copy-btn" onclick="copyCode('code-yop-py')">Copy Code</button>
+                    </div>
+<pre><code id="code-yop-py" class="language-python">import datetime
+import re
+from bs4 import BeautifulSoup
+from curl_cffi.requests import AsyncSession
+
+class YopmailScrapper:
+    @staticmethod
+    async def get_latest_message(email: str):
+        target = email.replace("@yopmail.com", "")
+        
+        async with AsyncSession(impersonate="chrome120", timeout=20.0) as client:
+            client.headers.update({"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9"})
+            
+            # 1. Tarik Token YP & Versi
+            r1 = await client.get("https://yopmail.com/")
+            if "CAPTCHA" in r1.text.upper(): return {"status": "error", "msg": "Captcha Index"}
+            
+            soup = BeautifulSoup(r1.text, "html.parser")
+            token_yp = soup.find("input", {"id": "yp"}).get("value") if soup.find("input", {"id": "yp"}) else ""
+            v_match = re.search(r"/ver/([\d\.]+)/", r1.text)
+            versi_v = v_match.group(1) if v_match else "9.3"
+            
+            # 2. Tarik Token YJ
+            await client.post("https://yopmail.com/", data={"yp": token_yp, "login": target})
+            r_js = await client.get(f"https://yopmail.com/ver/{versi_v}/webmail.js")
+            yj_match = re.search(r"yj=([a-zA-Z0-9]+)", r_js.text)
+            token_yj = yj_match.group(1) if yj_match else ""
+            
+            # 3. Buka List Inbox
+            now = datetime.datetime.now()
+            client.cookies.set("ytime", f"{now.hour}:{now.minute:02d}", domain="yopmail.com")
+            
+            params_inbox = {"login": target, "p": "1", "yp": token_yp, "yj": token_yj, "v": versi_v, "d": "", "ctrl": "", "id": "", "r_c": ""}
+            r_inbox = await client.get("https://yopmail.com/inbox", params=params_inbox)
+            soup_inbox = BeautifulSoup(r_inbox.text, "html.parser")
+            
+            email_div = soup_inbox.find("div", class_="m")
+            if not email_div: return {"status": "empty", "msg": "Inbox Kosong"}
+            
+            # 4. Baca Pesan
+            id_baca = "m" + email_div.get("id")
+            r_mail = await client.get("https://yopmail.com/mail", params={"b": target, "id": id_baca})
+            soup_mail = BeautifulSoup(r_mail.text, "html.parser")
+            
+            body = soup_mail.find("div", id="mailmillieu")
+            return {"status": "success", "html": str(body) if body else r_mail.text}
+</code></pre>
+                </div>
+            </div>
+
+            <!-- Node.js Tab -->
+            <div id="yop-js" class="tab-content">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span style="color: #e5c07b; font-weight: 600;">yopmail_api.js</span>
+                        <button class="copy-btn" onclick="copyCode('code-yop-js')">Copy Code</button>
+                    </div>
+<pre><code id="code-yop-js" class="language-javascript">const cloudscraper = require('cloudscraper');
+const cheerio = require('cheerio');
+
+async function getLatestMessageYopmail(email) {
+    const target = email.replace('@yopmail.com', '');
+    const scraper = cloudscraper.defaults({ jar: true });
+
+    try {
+        let res1 = await scraper.get('https://yopmail.com/');
+        let $ = cheerio.load(res1);
+        
+        const token_yp = $('#yp').val();
+        let versi_v = "9.3";
+        const vMatch = res1.match(/\/ver\/([\d\.]+)\//);
+        if (vMatch) versi_v = vMatch[1];
+
+        await scraper.post({ uri: 'https://yopmail.com/', form: { yp: token_yp, login: target } });
+        let resJs = await scraper.get(`https://yopmail.com/ver/${versi_v}/webmail.js`);
+        
+        const yjMatch = resJs.match(/yj=([a-zA-Z0-9]+)/);
+        const token_yj = yjMatch ? yjMatch[1] : '';
+
+        const d = new Date();
+        const ytime = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+        
+        const qs = `login=${target}&p=1&yp=${token_yp}&yj=${token_yj}&v=${versi_v}&d=&ctrl=&id=&r_c=`;
+        let resInbox = await scraper.get({
+            uri: `https://yopmail.com/inbox?${qs}`,
+            headers: { 'Referer': 'https://yopmail.com/wm', 'Cookie': `ytime=${ytime};` }
+        });
+
+        $ = cheerio.load(resInbox);
+        const firstEmail = $('div.m').first();
+        if (firstEmail.length === 0) return { status: 'empty', msg: 'Inbox Kosong' };
+
+        const msgId = 'm' + firstEmail.attr('id');
+        let resMail = await scraper.get({
+            uri: `https://yopmail.com/mail?b=${target}&id=${msgId}`,
+            headers: { 'Referer': 'https://yopmail.com/' }
+        });
+
+        $ = cheerio.load(resMail);
+        const htmlBody = $('#mailmillieu').html() || resMail;
+
+        return { status: 'success', html: htmlBody };
+    } catch (err) {
+        return { status: 'error', msg: err.message };
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts for UI logic and Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>
+        // Initialize Syntax Highlighting
+        hljs.highlightAll();
+
+        // Tab Switching Logic
+        function switchTab(evt, tabId) {
+            // Find parent card of the clicked button
+            const card = evt.currentTarget.closest('.card');
+            
+            // Remove active classes from buttons and contents within THIS card
+            card.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            card.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and target content
+            evt.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Copy to Clipboard Logic
+        function copyCode(codeElementId) {
+            const codeElement = document.getElementById(codeElementId);
+            const textToCopy = codeElement.innerText;
+            const btn = event.currentTarget;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied! ✔';
+                btn.style.background = 'var(--gold)';
+                btn.style.color = '#000';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'rgba(255, 215, 0, 0.1)';
+                    btn.style.color = 'var(--gold)';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
