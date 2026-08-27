@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Scrapper Cheat Sheet</title>
+    <title>API Scrapper</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -35,6 +35,7 @@
             font-family: 'Outfit', sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
             position: relative;
         }
 
@@ -42,32 +43,84 @@
         .bg-blob {
             position: fixed;
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(120px);
             z-index: -1;
-            opacity: 0.5;
+            opacity: 0.4;
             animation: float 20s infinite ease-in-out alternate;
         }
         .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--neon-purple); }
-        .blob-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(255, 215, 0, 0.3); animation-delay: -5s; }
+        .blob-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(255, 215, 0, 0.25); animation-delay: -5s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(50px, 50px) scale(1.1); }
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: rgba(13, 14, 21, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            position: fixed;
             padding: 40px 20px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-size: 1.3rem;
+            color: var(--gold);
+            text-shadow: var(--gold-glow);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: block;
+            padding: 10px 14px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+            background: rgba(255, 215, 0, 0.05);
+            border-color: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 280px;
+            padding: 50px;
+            max-width: 1100px;
+            width: 100%;
         }
 
         header {
-            text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 800;
             background: linear-gradient(90deg, #FFF, var(--gold));
             -webkit-background-clip: text;
@@ -91,10 +144,11 @@
             padding: 30px;
             margin-bottom: 40px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            scroll-margin-top: 40px;
             transition: transform 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             border-color: rgba(255, 215, 0, 0.5);
         }
 
@@ -129,6 +183,7 @@
         .alert-info .alert-title { color: #60A5FA; }
         .alert-warning .alert-title { color: var(--gold); }
         .alert-danger .alert-title { color: #F87171; }
+        .alert p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Badge for profiles */
         .badge-container {
@@ -246,76 +301,65 @@
         /* ==========================================
            RESPONSIVE DESIGN (MOBILE FRIENDLY) 
            ========================================== */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px 15px;
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
             }
 
-            header {
-                margin-bottom: 30px;
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .sidebar h2 {
+                margin-bottom: 15px;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .nav-links li {
+                margin-bottom: 0;
+                flex: 1 1 auto;
+            }
+
+            .nav-links a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                text-align: center;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 25px 15px;
             }
 
             h1 {
                 font-size: 2.2rem;
             }
 
-            p.subtitle {
-                font-size: 0.95rem;
-            }
-
             .card {
                 padding: 20px;
                 border-radius: 18px;
-                margin-bottom: 25px;
-            }
-
-            .card-title {
-                font-size: 1.4rem;
-            }
-
-            .card-desc {
-                font-size: 0.9rem;
             }
 
             .tabs {
-                flex-wrap: wrap;
                 width: 100%;
-                justify-content: center;
             }
 
             .tab-btn {
-                flex: 1 1 45%; /* Makes buttons side by side or stack depending on width */
+                flex: 1;
                 padding: 8px 10px;
                 font-size: 0.85rem;
+                text-align: center;
             }
-
-            .code-header {
-                padding: 10px 15px;
-            }
-
-            .code-header span {
-                font-size: 0.85rem;
-            }
-
-            .copy-btn {
-                padding: 4px 10px;
-                font-size: 0.8rem;
-            }
-
-            pre {
-                padding: 15px;
-            }
-
-            code {
-                font-size: 0.8rem;
-            }
-
-            /* Adjust Blobs for mobile so it doesn't overflow weirdly */
-            .bg-blob {
-                filter: blur(70px);
-            }
-            .blob-1 { width: 300px; height: 300px; top: -5%; left: -15%; }
-            .blob-2 { width: 350px; height: 350px; bottom: -5%; right: -15%; }
         }
     </style>
 </head>
@@ -325,14 +369,24 @@
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
 
-    <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <h2>⚡ API Docs</h2>
+        <ul class="nav-links">
+            <li><a href="#spoofing">🛡️ Spoofing</a></li>
+            <li><a href="#generator">🌐 Generator.email</a></li>
+            <li><a href="#yopmail">📭 Yopmail</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
         <header>
-            <h1>API Cheat Sheet</h1>
+            <h1>API SCRAPPER</h1>
             <p class="subtitle">Dokumentasi Scrapper Generator.email & Yopmail</p>
         </header>
 
         <!-- CARD 0: BROWSER SPOOFING -->
-        <div class="card">
+        <div id="spoofing" class="card">
             <h2 class="card-title">🛡️ Browser Spoofing & TLS Profiling</h2>
             <p class="card-desc">Keamanan web masa kini menganalisis <b>TLS Fingerprint</b> dan <b>HTTP/2 Headers</b>. Untuk menembus Yopmail dan Generator.email tanpa terkena Captcha, kita wajib memanipulasi profil browser.</p>
             
@@ -341,7 +395,7 @@
                 <p>Gunakan parameter <code>impersonate="[profile]"</code> pada <code>AsyncSession()</code>. Jika kamu menembak Yopmail berkali-kali menggunakan profile yang sama, kamu akan terkena halaman Captcha. Solusinya adalah me-<b>rotasi (random)</b> profile di bawah ini setiap kali request.</p>
             </div>
 
-            <p style="color: var(--text-main); font-weight: 600; margin-top: 10px; font-size: 0.95rem;">Daftar 15 Profile Yang Aman Untuk dipakai:</p>
+            <p style="color: var(--text-main); font-weight: 600; margin-top: 10px; font-size: 0.95rem;">Daftar 15 Profile Lulus Uji (Status 200 OK di Yopmail):</p>
             <div class="badge-container">
                 <span class="badge success">chrome99</span>
                 <span class="badge success">chrome100</span>
@@ -380,7 +434,7 @@ async with AsyncSession(impersonate=profile_pilihan) as client:
         </div>
 
         <!-- CARD 1: GENERATOR.EMAIL -->
-        <div class="card">
+        <div id="generator" class="card">
             <h2 class="card-title">🌐 Generator.email</h2>
             <p class="card-desc">Situs ini dilindungi ketat oleh Cloudflare Turnstile. Untuk membaca pesan, kita harus meniru perilaku browser dengan menyuntikkan cookie dan mengekstrak ID Pesan untuk "mengklik" email tersebut.</p>
             
@@ -470,7 +524,7 @@ async function fetchGeneratorInbox(email) {
     const headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36',
-        'Cookie': `surl=${encodeURIComponent(dmn)}%2F${encodeURIComponent(usr)}; inbox_n=1;`
+        'Cookie': `surl=${encodeURIComponent(dmn)}%2F{encodeURIComponent(usr)}; inbox_n=1;`
     };
 
     try {
@@ -506,7 +560,7 @@ async function fetchGeneratorInbox(email) {
         </div>
 
         <!-- CARD 2: YOPMAIL -->
-        <div class="card">
+        <div id="yopmail" class="card">
             <h2 class="card-title">📭 Yopmail.com</h2>
             <p class="card-desc">Yopmail menggunakan sistem <b>Dynamic JS Token</b>. Kita diwajibkan menarik token `yp` dari halaman depan, dan token `yj` dari file Javascript mereka untuk bisa memuat isi iFrame inbox.</p>
 
@@ -642,7 +696,7 @@ async function fetchYopmailInbox(email) {
         return { error: err.message };
     }
 }
-</code></pre>
+```</pre>
                 </div>
             </div>
         </div>
@@ -650,7 +704,7 @@ async function fetchYopmailInbox(email) {
     </div>
 
     <!-- Scripts for UI logic and Syntax Highlighting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js](https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js)"></script>
     <script>
         // Init Highlight.js
         hljs.highlightAll();
