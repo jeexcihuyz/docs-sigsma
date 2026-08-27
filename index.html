@@ -242,6 +242,81 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ==========================================
+           RESPONSIVE DESIGN (MOBILE FRIENDLY) 
+           ========================================== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            header {
+                margin-bottom: 30px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            p.subtitle {
+                font-size: 0.95rem;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 18px;
+                margin-bottom: 25px;
+            }
+
+            .card-title {
+                font-size: 1.4rem;
+            }
+
+            .card-desc {
+                font-size: 0.9rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tab-btn {
+                flex: 1 1 45%; /* Makes buttons side by side or stack depending on width */
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .code-header {
+                padding: 10px 15px;
+            }
+
+            .code-header span {
+                font-size: 0.85rem;
+            }
+
+            .copy-btn {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+
+            pre {
+                padding: 15px;
+            }
+
+            code {
+                font-size: 0.8rem;
+            }
+
+            /* Adjust Blobs for mobile so it doesn't overflow weirdly */
+            .bg-blob {
+                filter: blur(70px);
+            }
+            .blob-1 { width: 300px; height: 300px; top: -5%; left: -15%; }
+            .blob-2 { width: 350px; height: 350px; bottom: -5%; right: -15%; }
+        }
     </style>
 </head>
 <body>
@@ -266,7 +341,7 @@
                 <p>Gunakan parameter <code>impersonate="[profile]"</code> pada <code>AsyncSession()</code>. Jika kamu menembak Yopmail berkali-kali menggunakan profile yang sama, kamu akan terkena halaman Captcha. Solusinya adalah me-<b>rotasi (random)</b> profile di bawah ini setiap kali request.</p>
             </div>
 
-            <p style="color: var(--text-main); font-weight: 600; margin-top: 10px;">Daftar 15 Profile Lulus Uji (Status 200 OK di Yopmail):</p>
+            <p style="color: var(--text-main); font-weight: 600; margin-top: 10px; font-size: 0.95rem;">Daftar 15 Profile Yang Aman Untuk dipakai:</p>
             <div class="badge-container">
                 <span class="badge success">chrome99</span>
                 <span class="badge success">chrome100</span>
