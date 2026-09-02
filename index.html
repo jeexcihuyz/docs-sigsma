@@ -6,10 +6,10 @@
     <title>API Scrapper</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap](https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap)" rel="stylesheet">
     
     <!-- Highlight.js for Code Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css](https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css)">
     
     <style>
         :root {
@@ -27,6 +27,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -466,7 +470,7 @@ class GeneratorEmailAPI:
     async def fetch_inbox(email: str):
         usr, dmn = email.split("@", 1)
         safe_u, safe_d = urllib.parse.quote(usr), urllib.parse.quote(dmn)
-        base_url = f"https://generator.email/{safe_d}/{safe_u}"
+        base_url = f"[https://generator.email/](https://generator.email/){safe_d}/{safe_u}"
         
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9",
@@ -517,14 +521,14 @@ const cheerio = require('cheerio');
 
 async function fetchGeneratorInbox(email) {
     const [usr, dmn] = email.split('@');
-    const baseUrl = `https://generator.email/${encodeURIComponent(dmn)}/${encodeURIComponent(usr)}`;
+    const baseUrl = `[https://generator.email/$](https://generator.email/$){encodeURIComponent(dmn)}/${encodeURIComponent(usr)}`;
     
     // 🛡️ SPOOFING: Menggunakan cloudscraper default jar
     const scraper = cloudscraper.defaults({ jar: true });
     const headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36',
-        'Cookie': `surl=${encodeURIComponent(dmn)}%2F{encodeURIComponent(usr)}; inbox_n=1;`
+        'Cookie': `surl=${encodeURIComponent(dmn)}%2F${encodeURIComponent(usr)}; inbox_n=1;`
     };
 
     try {
@@ -603,7 +607,7 @@ class YopmailAPI:
             client.headers.update({"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9"})
             
             # 1. Bypass Index & Ambil Token YP
-            r1 = await client.get("https://yopmail.com/")
+            r1 = await client.get("[https://yopmail.com/](https://yopmail.com/)")
             if "CAPTCHA" in r1.text.upper(): return {"error": "Terblokir Captcha"}
             
             soup = BeautifulSoup(r1.text, "html.parser")
@@ -612,8 +616,8 @@ class YopmailAPI:
             versi_v = v_match.group(1) if v_match else "9.3"
             
             # 2. Ambil Token YJ dari Webmail.js
-            await client.post("https://yopmail.com/", data={"yp": token_yp, "login": target})
-            r_js = await client.get(f"https://yopmail.com/ver/{versi_v}/webmail.js")
+            await client.post("[https://yopmail.com/](https://yopmail.com/)", data={"yp": token_yp, "login": target})
+            r_js = await client.get(f"[https://yopmail.com/ver/](https://yopmail.com/ver/){versi_v}/webmail.js")
             yj_match = re.search(r"yj=([a-zA-Z0-9]+)", r_js.text)
             token_yj = yj_match.group(1) if yj_match else ""
             
@@ -622,7 +626,7 @@ class YopmailAPI:
             client.cookies.set("ytime", f"{now.hour}:{now.minute:02d}", domain="yopmail.com")
             
             params = {"login": target, "p": "1", "yp": token_yp, "yj": token_yj, "v": versi_v, "d": "", "ctrl": "", "id": "", "r_c": ""}
-            r_inbox = await client.get("https://yopmail.com/inbox", params=params)
+            r_inbox = await client.get("[https://yopmail.com/inbox](https://yopmail.com/inbox)", params=params)
             soup_inbox = BeautifulSoup(r_inbox.text, "html.parser")
             
             email_div = soup_inbox.find("div", class_="m")
@@ -630,7 +634,7 @@ class YopmailAPI:
             
             # 4. Buka Pesan Pertama
             id_baca = "m" + email_div.get("id")
-            r_mail = await client.get("https://yopmail.com/mail", params={"b": target, "id": id_baca})
+            r_mail = await client.get("[https://yopmail.com/mail](https://yopmail.com/mail)", params={"b": target, "id": id_baca})
             soup_mail = BeautifulSoup(r_mail.text, "html.parser")
             
             body = soup_mail.find("div", id="mailmillieu")
@@ -654,7 +658,7 @@ async function fetchYopmailInbox(email) {
     const scraper = cloudscraper.defaults({ jar: true });
 
     try {
-        let res1 = await scraper.get('https://yopmail.com/');
+        let res1 = await scraper.get('[https://yopmail.com/](https://yopmail.com/)');
         if (res1.includes('CAPTCHA')) throw new Error("Terkena Captcha");
 
         let $ = cheerio.load(res1);
@@ -663,8 +667,8 @@ async function fetchYopmailInbox(email) {
         const vMatch = res1.match(/\/ver\/([\d\.]+)\//);
         if (vMatch) versi_v = vMatch[1];
 
-        await scraper.post({ uri: 'https://yopmail.com/', form: { yp: token_yp, login: target } });
-        let resJs = await scraper.get(`https://yopmail.com/ver/${versi_v}/webmail.js`);
+        await scraper.post({ uri: '[https://yopmail.com/](https://yopmail.com/)', form: { yp: token_yp, login: target } });
+        let resJs = await scraper.get(`[https://yopmail.com/ver/$](https://yopmail.com/ver/$){versi_v}/webmail.js`);
         
         const yjMatch = resJs.match(/yj=([a-zA-Z0-9]+)/);
         const token_yj = yjMatch ? yjMatch[1] : '';
@@ -674,8 +678,8 @@ async function fetchYopmailInbox(email) {
         
         const qs = `login=${target}&p=1&yp=${token_yp}&yj=${token_yj}&v=${versi_v}&d=&ctrl=&id=&r_c=`;
         let resInbox = await scraper.get({
-            uri: `https://yopmail.com/inbox?${qs}`,
-            headers: { 'Referer': 'https://yopmail.com/wm', 'Cookie': `ytime=${ytime};` }
+            uri: `[https://yopmail.com/inbox?$](https://yopmail.com/inbox?$){qs}`,
+            headers: { 'Referer': '[https://yopmail.com/wm](https://yopmail.com/wm)', 'Cookie': `ytime=${ytime};` }
         });
 
         $ = cheerio.load(resInbox);
@@ -684,8 +688,8 @@ async function fetchYopmailInbox(email) {
 
         const msgId = 'm' + firstEmail.attr('id');
         let resMail = await scraper.get({
-            uri: `https://yopmail.com/mail?b=${target}&id=${msgId}`,
-            headers: { 'Referer': 'https://yopmail.com/' }
+            uri: `[https://yopmail.com/mail?b=$](https://yopmail.com/mail?b=$){target}&id=${msgId}`,
+            headers: { 'Referer': '[https://yopmail.com/](https://yopmail.com/)' }
         });
 
         $ = cheerio.load(resMail);
@@ -696,7 +700,7 @@ async function fetchYopmailInbox(email) {
         return { error: err.message };
     }
 }
-```</pre>
+</code></pre>
                 </div>
             </div>
         </div>
