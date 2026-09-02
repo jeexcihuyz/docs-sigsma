@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Scrapper</title>
+    <title>API Scrapper 2000</title>
     
-    <!-- Google Fonts -->
-    <link href="[https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap](https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap)" rel="stylesheet">
+    <!-- Google Fonts: Pixel/Retro Vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Highlight.js for Code Syntax Highlighting -->
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css](https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css)">
+    <!-- Highlight.js for Code Syntax Highlighting (Retro Theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css">
     
     <style>
         :root {
-            --bg-color: #0d0e15;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 215, 0, 0.2);
-            --gold: #FFD700;
-            --gold-glow: 0 0 20px rgba(255, 215, 0, 0.4);
-            --neon-purple: #b537f2;
-            --text-main: #f0f0f0;
-            --text-muted: #a0a0b0;
+            --y2k-pink: #FF00FF;
+            --y2k-cyan: #00FFFF;
+            --y2k-purple: #8A2BE2;
+            --y2k-green: #39FF14;
+            --y2k-silver: #C0C0C0;
+            --bg-dark: #090909;
+            --text-main: #FFFFFF;
         }
 
         * {
@@ -29,397 +28,289 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
+            /* Y2K Cyber Grid Background */
+            background-image: 
+                linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            position: relative;
-        }
-
-        /* Glamorous Background Blobs */
-        .bg-blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--neon-purple); }
-        .blob-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(255, 215, 0, 0.25); animation-delay: -5s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.1); }
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 280px;
+            font-family: 'Chakra Petch', sans-serif;
             height: 100vh;
-            background: rgba(13, 14, 21, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
-            position: fixed;
-            padding: 40px 20px;
-            overflow-y: auto;
-            z-index: 100;
+            display: flex;
+            overflow: hidden; /* Mencegah scroll full page */
         }
 
-        .sidebar h2 {
-            font-size: 1.3rem;
-            color: var(--gold);
-            text-shadow: var(--gold-glow);
-            margin-bottom: 30px;
+        /* Y2K Marquee Top Bar */
+        .top-marquee {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--y2k-pink);
+            color: #000;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 2px 0;
+            border-bottom: 2px solid var(--y2k-cyan);
+            z-index: 999;
+        }
+
+        /* Sidebar Window */
+        .sidebar {
+            width: 250px;
+            height: calc(100vh - 60px);
+            margin: 40px 10px 10px 10px;
+            background: var(--y2k-silver);
+            border: 3px solid;
+            border-color: #FFF #555 #555 #FFF;
             display: flex;
+            flex-direction: column;
+            box-shadow: 5px 5px 0px rgba(0,255,255,0.5);
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+        }
+
+        .window-header-btn {
+            background: var(--y2k-silver);
+            border: 2px solid;
+            border-color: #FFF #555 #555 #FFF;
+            color: black;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0 5px;
+            cursor: pointer;
         }
 
         .nav-links {
             list-style: none;
+            padding: 15px;
+            flex-grow: 1;
+            background: #000;
+            border: inset 3px #888;
+            margin: 5px;
         }
 
         .nav-links li {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: block;
-            padding: 10px 14px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--gold);
-            background: rgba(255, 215, 0, 0.05);
-            border-color: rgba(255, 215, 0, 0.2);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
-        }
-
-        /* Main Content Layout */
-        .main-content {
-            margin-left: 280px;
-            padding: 50px;
-            max-width: 1100px;
+        .nav-links button {
             width: 100%;
+            text-align: left;
+            background: transparent;
+            color: var(--y2k-cyan);
+            border: 1px dashed var(--y2k-cyan);
+            padding: 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        header {
-            margin-bottom: 40px;
+        .nav-links button:hover, .nav-links button.active {
+            background: var(--y2k-cyan);
+            color: #000;
+            box-shadow: 0 0 10px var(--y2k-cyan);
+            border-style: solid;
         }
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, #FFF, var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: var(--gold-glow);
-            margin-bottom: 10px;
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            height: calc(100vh - 60px);
+            margin: 40px 10px 10px 0;
+            position: relative;
         }
 
-        p.subtitle {
-            color: var(--text-muted);
+        /* Y2K Window Card */
+        .page-section {
+            display: none; /* Disembunyikan, diganti via JS */
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid var(--y2k-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5), inset 0 0 10px rgba(255, 0, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto; /* Scroll hanya di dalam konten jika panjang */
+            animation: glitch-in 0.3s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes glitch-in {
+            0% { transform: scale(0.98); opacity: 0; filter: hue-rotate(90deg); }
+            100% { transform: scale(1); opacity: 1; filter: hue-rotate(0deg); }
+        }
+
+        .page-title {
+            font-family: 'VT323', monospace;
+            font-size: 3rem;
+            color: var(--y2k-cyan);
+            text-shadow: 2px 2px var(--y2k-pink);
+            margin-bottom: 15px;
+            border-bottom: 2px dashed var(--y2k-pink);
+            padding-bottom: 10px;
+        }
+
+        .desc-text {
+            color: #ddd;
             font-size: 1.1rem;
-        }
-
-        /* Glassmorphism Card */
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            scroll-margin-top: 40px;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
-        .card-title {
-            font-size: 1.8rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* Alerts in Glassmorphism style */
-        .alert {
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border-left: 4px solid;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-        }
-        .alert-info { border-color: #3B82F6; }
-        .alert-warning { border-color: var(--gold); }
-        .alert-danger { border-color: #EF4444; }
-        .alert-title { font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-        .alert-info .alert-title { color: #60A5FA; }
-        .alert-warning .alert-title { color: var(--gold); }
-        .alert-danger .alert-title { color: #F87171; }
-        .alert p { color: var(--text-muted); font-size: 0.95rem; }
-
-        /* Badge for profiles */
+        /* Badges */
         .badge-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 15px;
+            margin: 15px 0;
         }
         .badge {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--gold);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-        }
-        .badge.success {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
-            color: #34D399;
+            background: #000;
+            border: 1px solid var(--y2k-green);
+            color: var(--y2k-green);
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            box-shadow: 0 0 5px var(--y2k-green);
         }
 
-        /* Tabs */
+        /* Alert Boxes */
+        .alert {
+            padding: 15px;
+            border: 2px solid;
+            background: #111;
+            margin-bottom: 20px;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+        .alert-warning { border-color: yellow; color: yellow; box-shadow: 0 0 10px rgba(255, 255, 0, 0.3); }
+        .alert-info { border-color: var(--y2k-cyan); color: var(--y2k-cyan); box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
+        .alert-danger { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3); }
+
+        /* Retro Tabs for Code */
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px;
-            border-radius: 12px;
-            width: fit-content;
+            margin-bottom: 0;
         }
-
         .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px 20px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
+            background: #333;
+            border: 2px solid var(--y2k-pink);
+            border-bottom: none;
+            color: white;
+            padding: 5px 15px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
         }
-
         .tab-btn.active {
-            background: var(--gold);
+            background: var(--y2k-pink);
             color: #000;
-            box-shadow: var(--gold-glow);
         }
 
         /* Code Block Area */
         .code-container {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #1e1e24;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--y2k-pink);
+            background: #000;
+            margin-bottom: 20px;
         }
-
         .code-header {
+            background: var(--y2k-pink);
+            color: #000;
+            padding: 5px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: bold;
         }
-
         .copy-btn {
-            background: rgba(255, 215, 0, 0.1);
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 5px 15px;
-            border-radius: 6px;
+            background: #000;
+            color: var(--y2k-pink);
+            border: 1px solid #000;
+            padding: 2px 8px;
             cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
         }
-
         .copy-btn:hover {
-            background: var(--gold);
+            background: var(--y2k-cyan);
             color: #000;
-            box-shadow: var(--gold-glow);
         }
+        pre { margin: 0; padding: 15px; overflow-x: auto; }
+        code { font-family: monospace; font-size: 0.95rem; }
 
-        pre {
-            margin: 0;
-            padding: 20px;
-            overflow-x: auto;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        code {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
+        /* Scrollbar ala Y2K */
+        ::-webkit-scrollbar { width: 12px; height: 12px; }
+        ::-webkit-scrollbar-track { background: var(--y2k-silver); border-left: 1px solid #888; }
+        ::-webkit-scrollbar-thumb { background: var(--y2k-pink); border: 2px solid #FFF; border-right-color: #555; border-bottom-color: #555; }
 
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ==========================================
-           RESPONSIVE DESIGN (MOBILE FRIENDLY) 
-           ========================================== */
-        @media (max-width: 900px) {
-            body {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 20px;
-                border-right: none;
-                border-bottom: 1px solid var(--glass-border);
-            }
-
-            .sidebar h2 {
-                margin-bottom: 15px;
-            }
-
-            .nav-links {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .nav-links li {
-                margin-bottom: 0;
-                flex: 1 1 auto;
-            }
-
-            .nav-links a {
-                padding: 6px 10px;
-                font-size: 0.85rem;
-                text-align: center;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 25px 15px;
-            }
-
-            h1 {
-                font-size: 2.2rem;
-            }
-
-            .card {
-                padding: 20px;
-                border-radius: 18px;
-            }
-
-            .tabs {
-                width: 100%;
-            }
-
-            .tab-btn {
-                flex: 1;
-                padding: 8px 10px;
-                font-size: 0.85rem;
-                text-align: center;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Blobs -->
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
+    <!-- Marquee -->
+    <div class="top-marquee">
+        <marquee scrollamount="8">✦ ✧ ✦ WELCOME TO API SCRAPPER v2000.exe ✦ BYPASS CLOUDFLARE ✦ TLS SPOOFING ✦ ✧ ✦</marquee>
+    </div>
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
-        <h2>⚡ API Docs</h2>
+        <div class="window-header">
+            <span>MENU.EXE</span>
+            <button class="window-header-btn">x</button>
+        </div>
         <ul class="nav-links">
-            <li><a href="#spoofing">🛡️ Spoofing</a></li>
-            <li><a href="#generator">🌐 Generator.email</a></li>
-            <li><a href="#yopmail">📭 Yopmail</a></li>
+            <li><button class="menu-btn active" onclick="navigate('spoofing')">>> SPOOFING_</button></li>
+            <li><button class="menu-btn" onclick="navigate('generator')">>> GEN.EMAIL_</button></li>
+            <li><button class="menu-btn" onclick="navigate('yopmail')">>> YOPMAIL_</button></li>
         </ul>
     </nav>
 
-    <div class="main-content">
-        <header>
-            <h1>API SCRAPPER</h1>
-            <p class="subtitle">Dokumentasi Scrapper Generator.email & Yopmail</p>
-        </header>
-
-        <!-- CARD 0: BROWSER SPOOFING -->
-        <div id="spoofing" class="card">
-            <h2 class="card-title">🛡️ Browser Spoofing & TLS Profiling</h2>
-            <p class="card-desc">Keamanan web masa kini menganalisis <b>TLS Fingerprint</b> dan <b>HTTP/2 Headers</b>. Untuk menembus Yopmail dan Generator.email tanpa terkena Captcha, kita wajib memanipulasi profil browser.</p>
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- PAGE 0: BROWSER SPOOFING -->
+        <section id="spoofing" class="page-section active">
+            <h2 class="page-title">🛡️ BROWSER SPOOFING.DLL</h2>
+            <p class="desc-text">Keamanan web masa kini menganalisis <b>TLS Fingerprint</b> dan <b>HTTP/2 Headers</b>. Untuk menembus Yopmail dan Generator.email tanpa terkena Captcha, kita wajib memanipulasi profil browser.</p>
             
             <div class="alert alert-warning">
-                <div class="alert-title">⚠️ Wajib Implementasi untuk curl_cffi</div>
-                <p>Gunakan parameter <code>impersonate="[profile]"</code> pada <code>AsyncSession()</code>. Jika kamu menembak Yopmail berkali-kali menggunakan profile yang sama, kamu akan terkena halaman Captcha. Solusinya adalah me-<b>rotasi (random)</b> profile di bawah ini setiap kali request.</p>
+                <strong>[!] WARNING_</strong> Gunakan parameter <code>impersonate="[profile]"</code> pada <code>AsyncSession()</code>. Jika kamu menembak Yopmail berkali-kali menggunakan profile yang sama, kamu akan terkena halaman Captcha. Lakukan rotasi profile!
             </div>
 
-            <p style="color: var(--text-main); font-weight: 600; margin-top: 10px; font-size: 0.95rem;">Daftar 15 Profile Lulus Uji (Status 200 OK di Yopmail):</p>
+            <p style="color: var(--y2k-cyan); font-weight: bold; margin-top: 10px;">> PROFIL_LULUS_UJI.TXT :</p>
             <div class="badge-container">
-                <span class="badge success">chrome99</span>
-                <span class="badge success">chrome100</span>
-                <span class="badge success">chrome101</span>
-                <span class="badge success">chrome104</span>
-                <span class="badge success">chrome110</span>
-                <span class="badge success">chrome116</span>
-                <span class="badge success">chrome119</span>
-                <span class="badge success">chrome120</span>
-                <span class="badge success">chrome123</span>
-                <span class="badge success">chrome124</span>
-                <span class="badge success">edge99</span>
-                <span class="badge success">edge101</span>
-                <span class="badge success">safari15_3</span>
-                <span class="badge success">safari15_5</span>
-                <span class="badge success">safari17_0</span>
+                <span class="badge">chrome99</span> <span class="badge">chrome100</span> <span class="badge">chrome101</span>
+                <span class="badge">chrome104</span> <span class="badge">chrome110</span> <span class="badge">chrome116</span>
+                <span class="badge">chrome119</span> <span class="badge">chrome120</span> <span class="badge">chrome123</span>
+                <span class="badge">chrome124</span> <span class="badge">edge99</span> <span class="badge">edge101</span>
+                <span class="badge">safari15_3</span> <span class="badge">safari15_5</span> <span class="badge">safari17_0</span>
             </div>
             
             <div class="code-container" style="margin-top: 20px;">
-<pre><code class="language-python"># Contoh Implementasi Rotasi
+                <div class="code-header">
+                    <span>rotasi.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-spoof')">COPY</button>
+                </div>
+<pre><code id="code-spoof" class="language-python"># Contoh Implementasi Rotasi
 import random
 from curl_cffi.requests import AsyncSession
 
@@ -435,30 +326,28 @@ async with AsyncSession(impersonate=profile_pilihan) as client:
     pass
 </code></pre>
             </div>
-        </div>
+        </section>
 
-        <!-- CARD 1: GENERATOR.EMAIL -->
-        <div id="generator" class="card">
-            <h2 class="card-title">🌐 Generator.email</h2>
-            <p class="card-desc">Situs ini dilindungi ketat oleh Cloudflare Turnstile. Untuk membaca pesan, kita harus meniru perilaku browser dengan menyuntikkan cookie dan mengekstrak ID Pesan untuk "mengklik" email tersebut.</p>
+        <!-- PAGE 1: GENERATOR.EMAIL -->
+        <section id="generator" class="page-section">
+            <h2 class="page-title">🌐 GENERATOR.EMAIL.EXE</h2>
+            <p class="desc-text">Situs ini dilindungi ketat oleh Cloudflare Turnstile. Untuk membaca pesan, kita harus meniru perilaku browser dengan menyuntikkan cookie dan mengekstrak ID Pesan untuk "mengklik" email tersebut.</p>
             
             <div class="alert alert-info">
-                <div class="alert-title">💡 Alur Logika By-Pass</div>
-                <p>Suntik Cookie <code>surl</code> 👉 Fetch URL Utama 👉 Cari Regex <code>cur_msg_id</code> 👉 Fetch URL Utama + ID Pesan 👉 Ekstrak DOM HTML.</p>
+                <strong>[i] INFO_LOGIKA:</strong> Suntik Cookie <code>surl</code> -> Fetch URL Utama -> Cari Regex <code>cur_msg_id</code> -> Fetch URL Utama + ID Pesan -> Ekstrak DOM HTML.
             </div>
 
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab(event, 'gen-py')">Python (curl_cffi)</button>
-                <button class="tab-btn" onclick="switchTab(event, 'gen-js')">Node.js (cloudscraper)</button>
+                <button class="tab-btn active" onclick="switchCodeTab(event, 'gen-py')">Python</button>
+                <button class="tab-btn" onclick="switchCodeTab(event, 'gen-js')">Node.js</button>
             </div>
 
-            <!-- Python Tab -->
-            <div id="gen-py" class="tab-content active">
-                <div class="code-container">
-                    <div class="code-header">
-                        <span style="color: #61afef; font-weight: 600;">generator_api.py</span>
-                        <button class="copy-btn" onclick="copyCode('code-gen-py')">Copy Code</button>
-                    </div>
+            <!-- Python Code -->
+            <div id="gen-py" class="tab-content active code-container">
+                <div class="code-header">
+                    <span>generator_api.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-gen-py')">COPY</button>
+                </div>
 <pre><code id="code-gen-py" class="language-python">import asyncio
 import urllib.parse
 import re
@@ -470,7 +359,7 @@ class GeneratorEmailAPI:
     async def fetch_inbox(email: str):
         usr, dmn = email.split("@", 1)
         safe_u, safe_d = urllib.parse.quote(usr), urllib.parse.quote(dmn)
-        base_url = f"[https://generator.email/](https://generator.email/){safe_d}/{safe_u}"
+        base_url = f"https://generator.email/{safe_d}/{safe_u}"
         
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9",
@@ -478,17 +367,14 @@ class GeneratorEmailAPI:
             "Upgrade-Insecure-Requests": "1"
         }
 
-        # 🛡️ SPOOFING: Impersonate Chrome 120
         async with AsyncSession(impersonate="chrome120", timeout=30.0) as client:
             client.cookies.set("surl", f"{safe_d}%2F{safe_u}", domain="generator.email")
             client.cookies.set("inbox_n", "1", domain="generator.email")
             
-            # 1. Buka Inbox
             r = await client.get(base_url, headers=headers)
             if "just a moment" in r.text.lower() or r.status_code in [403, 503]:
                 return {"error": "Terblokir Cloudflare WAF"}
 
-            # 2. Cari ID Pesan (Simulasi Klik)
             msg_id = None
             cur_msg = re.search(r'cur_msg_id:\s*"([^"]+)"', r.text)
             if cur_msg and len(cur_msg.group(1)) > 5:
@@ -499,31 +385,27 @@ class GeneratorEmailAPI:
 
             if not msg_id: return {"error": "Inbox kosong"}
 
-            # 3. Ekstrak Isi Pesan
             r_msg = await client.get(f"{base_url}/{msg_id}", headers=headers)
             soup = BeautifulSoup(r_msg.text, "html.parser")
             body = soup.find(class_="mess_bodiyy")
             
             return {"success": True, "raw_html": str(body) if body else r_msg.text}
 </code></pre>
-                </div>
             </div>
 
-            <!-- Node.js Tab -->
-            <div id="gen-js" class="tab-content">
-                <div class="code-container">
-                    <div class="code-header">
-                        <span style="color: #e5c07b; font-weight: 600;">generator_api.js</span>
-                        <button class="copy-btn" onclick="copyCode('code-gen-js')">Copy Code</button>
-                    </div>
+            <!-- Node.js Code -->
+            <div id="gen-js" class="tab-content code-container">
+                <div class="code-header">
+                    <span>generator_api.js</span>
+                    <button class="copy-btn" onclick="copyCode('code-gen-js')">COPY</button>
+                </div>
 <pre><code id="code-gen-js" class="language-javascript">const cloudscraper = require('cloudscraper');
 const cheerio = require('cheerio');
 
 async function fetchGeneratorInbox(email) {
     const [usr, dmn] = email.split('@');
-    const baseUrl = `[https://generator.email/$](https://generator.email/$){encodeURIComponent(dmn)}/${encodeURIComponent(usr)}`;
+    const baseUrl = `https://generator.email/${encodeURIComponent(dmn)}/${encodeURIComponent(usr)}`;
     
-    // 🛡️ SPOOFING: Menggunakan cloudscraper default jar
     const scraper = cloudscraper.defaults({ jar: true });
     const headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
@@ -559,32 +441,29 @@ async function fetchGeneratorInbox(email) {
     }
 }
 </code></pre>
-                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- CARD 2: YOPMAIL -->
-        <div id="yopmail" class="card">
-            <h2 class="card-title">📭 Yopmail.com</h2>
-            <p class="card-desc">Yopmail menggunakan sistem <b>Dynamic JS Token</b>. Kita diwajibkan menarik token `yp` dari halaman depan, dan token `yj` dari file Javascript mereka untuk bisa memuat isi iFrame inbox.</p>
+        <!-- PAGE 2: YOPMAIL -->
+        <section id="yopmail" class="page-section">
+            <h2 class="page-title">📭 YOPMAIL.BAT</h2>
+            <p class="desc-text">Yopmail menggunakan sistem <b>Dynamic JS Token</b>. Kita diwajibkan menarik token `yp` dari halaman depan, dan token `yj` dari file Javascript mereka untuk bisa memuat isi iFrame inbox.</p>
 
             <div class="alert alert-danger">
-                <div class="alert-title">🚨 Peringatan Captcha</div>
-                <p>Yopmail sangat agresif melacak IP Address dan TLS Request. Pastikan selalu melakukan rotasi pada 15 Profile yang ada di atas jika melakukan scrapping secara *Bulk* atau massal.</p>
+                <strong>[X] FATAL ERROR RISK_</strong> Yopmail sangat agresif melacak IP Address dan TLS Request. Pastikan selalu melakukan rotasi pada 15 Profile jika melakukan scrapping secara masal.
             </div>
 
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab(event, 'yop-py')">Python (curl_cffi)</button>
-                <button class="tab-btn" onclick="switchTab(event, 'yop-js')">Node.js (cloudscraper)</button>
+                <button class="tab-btn active" onclick="switchCodeTab(event, 'yop-py')">Python</button>
+                <button class="tab-btn" onclick="switchCodeTab(event, 'yop-js')">Node.js</button>
             </div>
 
             <!-- Python Tab -->
-            <div id="yop-py" class="tab-content active">
-                <div class="code-container">
-                    <div class="code-header">
-                        <span style="color: #61afef; font-weight: 600;">yopmail_api.py</span>
-                        <button class="copy-btn" onclick="copyCode('code-yop-py')">Copy Code</button>
-                    </div>
+            <div id="yop-py" class="tab-content active code-container">
+                <div class="code-header">
+                    <span>yopmail_api.py</span>
+                    <button class="copy-btn" onclick="copyCode('code-yop-py')">COPY</button>
+                </div>
 <pre><code id="code-yop-py" class="language-python">import datetime
 import re
 import random
@@ -596,18 +475,12 @@ class YopmailAPI:
     async def fetch_inbox(email: str):
         target = email.replace("@yopmail.com", "")
         
-        # 🛡️ SPOOFING TLS ROTATION
-        SAFE_PROFILES = [
-            "chrome99", "chrome100", "chrome101", "chrome104", "chrome110", 
-            "chrome116", "chrome119", "chrome120", "chrome123", "chrome124", 
-            "edge99", "edge101", "safari15_3", "safari15_5", "safari17_0"
-        ]
+        SAFE_PROFILES = ["chrome119", "chrome120", "chrome123", "edge101", "safari17_0"] # Disingkat buat contoh
         
         async with AsyncSession(impersonate=random.choice(SAFE_PROFILES), timeout=20.0) as client:
             client.headers.update({"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9"})
             
-            # 1. Bypass Index & Ambil Token YP
-            r1 = await client.get("[https://yopmail.com/](https://yopmail.com/)")
+            r1 = await client.get("https://yopmail.com/")
             if "CAPTCHA" in r1.text.upper(): return {"error": "Terblokir Captcha"}
             
             soup = BeautifulSoup(r1.text, "html.parser")
@@ -615,41 +488,36 @@ class YopmailAPI:
             v_match = re.search(r"/ver/([\d\.]+)/", r1.text)
             versi_v = v_match.group(1) if v_match else "9.3"
             
-            # 2. Ambil Token YJ dari Webmail.js
-            await client.post("[https://yopmail.com/](https://yopmail.com/)", data={"yp": token_yp, "login": target})
-            r_js = await client.get(f"[https://yopmail.com/ver/](https://yopmail.com/ver/){versi_v}/webmail.js")
+            await client.post("https://yopmail.com/", data={"yp": token_yp, "login": target})
+            r_js = await client.get(f"https://yopmail.com/ver/{versi_v}/webmail.js")
             yj_match = re.search(r"yj=([a-zA-Z0-9]+)", r_js.text)
             token_yj = yj_match.group(1) if yj_match else ""
             
-            # 3. Masuk ke iFrame Inbox
             now = datetime.datetime.now()
             client.cookies.set("ytime", f"{now.hour}:{now.minute:02d}", domain="yopmail.com")
             
             params = {"login": target, "p": "1", "yp": token_yp, "yj": token_yj, "v": versi_v, "d": "", "ctrl": "", "id": "", "r_c": ""}
-            r_inbox = await client.get("[https://yopmail.com/inbox](https://yopmail.com/inbox)", params=params)
+            r_inbox = await client.get("https://yopmail.com/inbox", params=params)
             soup_inbox = BeautifulSoup(r_inbox.text, "html.parser")
             
             email_div = soup_inbox.find("div", class_="m")
             if not email_div: return {"error": "Inbox kosong"}
             
-            # 4. Buka Pesan Pertama
             id_baca = "m" + email_div.get("id")
-            r_mail = await client.get("[https://yopmail.com/mail](https://yopmail.com/mail)", params={"b": target, "id": id_baca})
+            r_mail = await client.get("https://yopmail.com/mail", params={"b": target, "id": id_baca})
             soup_mail = BeautifulSoup(r_mail.text, "html.parser")
             
             body = soup_mail.find("div", id="mailmillieu")
             return {"success": True, "raw_html": str(body) if body else r_mail.text}
 </code></pre>
-                </div>
             </div>
 
             <!-- Node.js Tab -->
-            <div id="yop-js" class="tab-content">
-                <div class="code-container">
-                    <div class="code-header">
-                        <span style="color: #e5c07b; font-weight: 600;">yopmail_api.js</span>
-                        <button class="copy-btn" onclick="copyCode('code-yop-js')">Copy Code</button>
-                    </div>
+            <div id="yop-js" class="tab-content code-container">
+                <div class="code-header">
+                    <span>yopmail_api.js</span>
+                    <button class="copy-btn" onclick="copyCode('code-yop-js')">COPY</button>
+                </div>
 <pre><code id="code-yop-js" class="language-javascript">const cloudscraper = require('cloudscraper');
 const cheerio = require('cheerio');
 
@@ -658,7 +526,7 @@ async function fetchYopmailInbox(email) {
     const scraper = cloudscraper.defaults({ jar: true });
 
     try {
-        let res1 = await scraper.get('[https://yopmail.com/](https://yopmail.com/)');
+        let res1 = await scraper.get('https://yopmail.com/');
         if (res1.includes('CAPTCHA')) throw new Error("Terkena Captcha");
 
         let $ = cheerio.load(res1);
@@ -667,8 +535,8 @@ async function fetchYopmailInbox(email) {
         const vMatch = res1.match(/\/ver\/([\d\.]+)\//);
         if (vMatch) versi_v = vMatch[1];
 
-        await scraper.post({ uri: '[https://yopmail.com/](https://yopmail.com/)', form: { yp: token_yp, login: target } });
-        let resJs = await scraper.get(`[https://yopmail.com/ver/$](https://yopmail.com/ver/$){versi_v}/webmail.js`);
+        await scraper.post({ uri: 'https://yopmail.com/', form: { yp: token_yp, login: target } });
+        let resJs = await scraper.get(`https://yopmail.com/ver/${versi_v}/webmail.js`);
         
         const yjMatch = resJs.match(/yj=([a-zA-Z0-9]+)/);
         const token_yj = yjMatch ? yjMatch[1] : '';
@@ -678,8 +546,8 @@ async function fetchYopmailInbox(email) {
         
         const qs = `login=${target}&p=1&yp=${token_yp}&yj=${token_yj}&v=${versi_v}&d=&ctrl=&id=&r_c=`;
         let resInbox = await scraper.get({
-            uri: `[https://yopmail.com/inbox?$](https://yopmail.com/inbox?$){qs}`,
-            headers: { 'Referer': '[https://yopmail.com/wm](https://yopmail.com/wm)', 'Cookie': `ytime=${ytime};` }
+            uri: `https://yopmail.com/inbox?${qs}`,
+            headers: { 'Referer': 'https://yopmail.com/wm', 'Cookie': `ytime=${ytime};` }
         });
 
         $ = cheerio.load(resInbox);
@@ -688,8 +556,8 @@ async function fetchYopmailInbox(email) {
 
         const msgId = 'm' + firstEmail.attr('id');
         let resMail = await scraper.get({
-            uri: `[https://yopmail.com/mail?b=$](https://yopmail.com/mail?b=$){target}&id=${msgId}`,
-            headers: { 'Referer': '[https://yopmail.com/](https://yopmail.com/)' }
+            uri: `https://yopmail.com/mail?b=${target}&id=${msgId}`,
+            headers: { 'Referer': 'https://yopmail.com/' }
         });
 
         $ = cheerio.load(resMail);
@@ -701,32 +569,46 @@ async function fetchYopmailInbox(email) {
     }
 }
 </code></pre>
-                </div>
             </div>
-        </div>
+        </section>
 
-    </div>
+    </main>
 
-    <!-- Scripts for UI logic and Syntax Highlighting -->
-    <script src="[https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js](https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js)"></script>
+    <!-- Syntax Highlighting Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script>
-        // Init Highlight.js
+        // Init Syntax Highlight
         hljs.highlightAll();
 
-        // Switch Tabs Function
-        function switchTab(evt, tabId) {
-            const card = evt.currentTarget.closest('.card');
+        // LOGIKA SINGLE PAGE APP (No Scroll Down)
+        function navigate(pageId) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Hapus status active dari semua tombol menu
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             
-            // Handle Tab Buttons
-            card.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Tampilkan section yang dipilih
+            document.getElementById(pageId).classList.add('active');
+            // Tandai tombol menu yang diklik
+            event.currentTarget.classList.add('active');
+        }
+
+        // Logic buat tab Python / Node.js
+        function switchCodeTab(evt, tabId) {
+            const container = evt.currentTarget.closest('.page-section');
+            
+            container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             evt.currentTarget.classList.add('active');
             
-            // Handle Tab Content
-            card.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            container.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Copy Code Function
+        // Copy Code feature
         function copyCode(codeElementId) {
             const codeElement = document.getElementById(codeElementId);
             const textToCopy = codeElement.innerText;
@@ -734,14 +616,14 @@ async function fetchYopmailInbox(email) {
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const originalText = btn.innerText;
-                btn.innerText = 'Copied! ✔';
-                btn.style.background = 'var(--gold)';
+                btn.innerText = 'COPIED!';
+                btn.style.background = 'var(--y2k-green)';
                 btn.style.color = '#000';
                 
                 setTimeout(() => {
                     btn.innerText = originalText;
-                    btn.style.background = 'rgba(255, 215, 0, 0.1)';
-                    btn.style.color = 'var(--gold)';
+                    btn.style.background = '#000';
+                    btn.style.color = 'var(--y2k-pink)';
                 }, 2000);
             });
         }
