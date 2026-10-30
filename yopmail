@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Scrapper 2000</title>
+    <title>API Scrapper</title>
     
     <!-- Google Fonts: Pixel/Retro Vibe -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
@@ -330,7 +330,7 @@ async with AsyncSession(impersonate=profile_pilihan) as client:
 
         <!-- PAGE 1: GENERATOR.EMAIL -->
         <section id="generator" class="page-section">
-            <h2 class="page-title">🌐 GENERATOR.EMAIL.EXE</h2>
+            <h2 class="page-title">🌐 GENERATOR.EMAIL</h2>
             <p class="desc-text">Situs ini dilindungi ketat oleh Cloudflare Turnstile. Untuk membaca pesan, kita harus meniru perilaku browser dengan menyuntikkan cookie dan mengekstrak ID Pesan untuk "mengklik" email tersebut.</p>
             
             <div class="alert alert-info">
@@ -446,7 +446,7 @@ async function fetchGeneratorInbox(email) {
 
         <!-- PAGE 2: YOPMAIL -->
         <section id="yopmail" class="page-section">
-            <h2 class="page-title">📭 YOPMAIL.BAT</h2>
+            <h2 class="page-title">📭 YOPMAIL</h2>
             <p class="desc-text">Yopmail menggunakan sistem <b>Dynamic JS Token</b>. Kita diwajibkan menarik token `yp` dari halaman depan, dan token `yj` dari file Javascript mereka untuk bisa memuat isi iFrame inbox.</p>
 
             <div class="alert alert-danger">
